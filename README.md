@@ -89,16 +89,70 @@ git clone https://github.com/emidan19/deep-tempest.git
 
 Both [gr-tempest](./gr-tempest/) and [end-to-end](./end-to-end/) folders contains a guide on how to execute the corresponding files for image capturing, inference and train the deep learning architecture based on DRUNet from [KAIR image restoration repository](https://github.com/cszn/KAIR/tree/master).
 
-The code is written in Python version 3.10, using Anaconda environments. To replicate the working environment, create a new one with the libraries listed in [*requirements.txt*](./requirements.txt):
+### deep-tempest Environment Setup
 
-```shell
-conda create --name deeptempest --file requirements.txt
+This guide describes how to set up the environment for using the `deep-tempest` repository. You can choose between two setup options: using **Conda** or **Pyenv + venv**. The code works with both **Python 3.12** and **Python 3.10**, and has been tested on Ubuntu 22.04.5 LTS and Ubuntu 24.04.2 LTS, so you can choose either version depending on your system and preference. The example below use **Python 3.12**.
+
+The system runs with CUDA 12.4, but the environment uses the PyTorch and Torchvision build for CUDA 12.1, as it is the latest stable release officially provided by PyTorch.
+
+
+---
+
+### Prerequisite (Required for All Options):
+
+Before setting up the environment, you must install Tesseract OCR:
+
+```bash
+sudo apt update
+sudo apt install tesseract-ocr
 ```
 
-Activate it with:
+### Option 1: Using Conda:
+
+#### Create and activate a new Conda environment:
+
 ```shell
+conda create -n deeptempest python=3.12
 conda activate deeptempest
 ```
+#### Install dependencies from the provided YAML file:
+
+```shell
+conda env update --file tempest_conda.yml
+```
+
+#### Install additional required packages:
+
+```shell
+pip install torch==2.5.1+cu121 torchvision==0.20.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+pip install pybind11==2.13.6
+pip install --no-build-isolation git+https://github.com/sfernandezr/fastwer.git
+```
+
+### Option 2: Using Pyenv + venv
+
+#### Create and activate a virtual environment:
+
+```shell
+python3.12 -m venv deeptempest
+cd deeptempest
+source bin/activate
+```
+
+#### Install dependencies from tempest_pyenv file:
+
+```shell
+pip install -r tempest_pyenv.txt
+```
+
+#### Install additional required packages manually:
+
+```shell
+pip install torch==2.5.1+cu121 torchvision==0.20.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+pip install pybind11==2.13.6
+pip install --no-build-isolation git+https://github.com/sfernandezr/fastwer.git
+```
+
 
 Regarding installations with GNU Radio, **it is necessary to use the [gr-tempest](./gr-tempest/) version in this repository** *(which contains a modified version of the original gr-tempest)*. After this, run the following *grc* files flowgraphs to activate the *hierblocks*:
 - [binary_serializer.grc](./gr-tempest/examples/binary_serializer.grc)
