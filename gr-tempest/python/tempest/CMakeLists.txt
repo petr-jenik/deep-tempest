@@ -22,6 +22,19 @@ add_subdirectory(bindings)
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
+    ../image_source.py
+    ../message_to_var.py
+    ../tempest_msgbtn.py
+    ../TMDS_image_source.py
+    ../DTutils.py
+    ../TMDS_decoder.py
+    ../basicblock.py
+    ../network_unet.py
+    ../select_model.py
+    ../utils_dist.py
+    ../utils_image.py
+    ../utils_option.py
+    ../buttonToFileSink.py
     DESTINATION ${GR_PYTHON_DIR}/gnuradio/tempest
 )
 
