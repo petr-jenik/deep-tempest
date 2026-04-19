@@ -47,8 +47,18 @@ except ModuleNotFoundError:
 
 try:
     from .buttonToFileSink import buttonToFileSink
-except ModuleNotFoundError:
-    pass
+except ModuleNotFoundError as exc:
+    _btn_missing_dep = getattr(exc, 'name', 'unknown')
+    _btn_import_exc = exc
+
+    class buttonToFileSink:  # type: ignore[no-redef]
+        def __init__(self, *args, **kwargs):
+            raise ImportError(
+                "gnuradio.tempest.buttonToFileSink could not be loaded because "
+                f"dependency '{_btn_missing_dep}' is missing. "
+                "Install project Python dependencies (e.g. pip install -r tempest_pyenv.txt) "
+                "and run with the same Python environment used for gr-tempest."
+            ) from _btn_import_exc
 
 try:
     from .DTutils import apply_blanking_shift, remove_outliers, adjust_dynamic_range
